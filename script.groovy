@@ -15,11 +15,13 @@ def buildImage() {
 def deployApp() {
     echo 'deploying the application...'
 
-    // Make sure kubeconfig exists for kubectl
-    sh 'aws eks update-kubeconfig --name eks-cluster-test --region $AWS_DEFAULT_REGION'
+    // Jenkins Plugin
+    withKubeConfig([credentialsId: 'digitalocean-credentials', serverUrl: 'https://70850354-96b1-475a-8b17-18b0b6b7dbe5.k8s.ondigitalocean.com']) {
+        // Now deploy with kubectl
+        sh 'kubectl create deployment nginx-deployment --image=nginx'
+    }
 
-    // Now deploy with kubectl
-    sh 'kubectl create deployment nginx-deployment --image=nginx'
+    
 }
 
 return this
