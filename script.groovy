@@ -14,10 +14,7 @@ def buildImage() {
 
 def deployApp() {
     echo 'deploying the application...'
-    sh '''
-        aws sts get-caller-identity
-        kubectl get nodes
-    '''
+
     sh 'kubectl create deployment nginx-deployment --image=nginx'
 }
 
