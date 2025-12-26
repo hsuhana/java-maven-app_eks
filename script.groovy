@@ -15,6 +15,10 @@ def buildImage() {
 def deployApp() {
     echo 'deploying the application...'
 
+    // Make sure kubeconfig exists for kubectl
+    sh 'aws eks update-kubeconfig --name eks-cluster-test --region $AWS_DEFAULT_REGION'
+
+    // Now deploy with kubectl
     sh 'kubectl create deployment nginx-deployment --image=nginx'
 }
 
