@@ -14,13 +14,29 @@ def buildJar() {
 }
 
 def buildImage() {
-    echo "building the docker image..."
-    withCredentials([usernamePassword(credentialsId: 'dockerhub-credential', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-        sh "docker build -t tracyhsu57/my-app:${IMAGE_NAME} ."
+    echo "building multi-arch docker image..."
+
+    withCredentials([usernamePassword(credentialsId: 'dockerhub-credential',
+                                      passwordVariable: 'PASS',
+                                      usernameVariable: 'USER')]) {
+
+        // Login first
         sh 'echo $PASS | docker login -u $USER --password-stdin'
-        sh "docker push tracyhsu57/my-app:${IMAGE_NAME}"
+
+        // Enable buildx (safe to run multiple times)
+        sh 'docker buildx create --use --name multiarch-builder || true'
+        sh 'docker buildx inspect --bootstrap'
+
+        // Build & push multi-arch image
+        sh """
+        docker buildx build \
+          --platform linux/amd64,linux/arm64 \
+          -t tracyhsu57/my-app:${IMAGE_NAME} \
+          --push .
+        """
     }
 }
+
 
 def deployApp() {
     echo 'deploying the application...'
