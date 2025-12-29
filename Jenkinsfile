@@ -63,6 +63,8 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'github-credential', passwordVariable: 'PASS', usernameVariable: 'USER')]){
+                        sh 'git config user.name "hsuhana"'
+                        sh 'git config user.email "iamnotliaml@gmail.com"'
                         sh "git remote set-url origin https://${USER}:${PASS}@github.com/hsuhana/java-maven-app_eks.git"
                         sh 'git add .'
                         sh 'git commit -m "ci: version bump"'
