@@ -53,8 +53,8 @@ pipeline {
                     // Make sure kubeconfig exists for kubectl
                     sh 'aws eks update-kubeconfig --name eks-cluster-test --region $AWS_DEFAULT_REGION'
 
-                    sh 'envsubst < kubernetes/deployment.yaml | kubectl apply -f -'
-                    sh 'envsubst < kubernetes/service.yaml | kubectl apply -f -'
+                    sh 'envsubst < Kubernetes/deployment.yaml | kubectl apply -f -'
+                    sh 'envsubst < Kubernetes/service.yaml | kubectl apply -f -'
                 }
             }
         }
