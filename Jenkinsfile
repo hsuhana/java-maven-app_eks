@@ -62,10 +62,10 @@ pipeline {
         stage('commit version update'){
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'github-credential', passwordVariable: 'GIT_USER', usernameVariable: 'GIT_TOKEN')]){
+                    withCredentials([usernamePassword(credentialsId: 'github-credential', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]){
                         sh 'git config user.name "hsuhana"'
                         sh 'git config user.email "iamnotliaml@gmail.com"'
-                        sh "git remote set-url origin https://$GIT_USER:$GIT_TOKEN@github.com/hsuhana/java-maven-app_eks.git" 
+                        sh 'git remote set-url origin https://' + GIT_USER + ':' + GIT_TOKEN + '@github.com/hsuhana/java-maven-app_eks.git' 
                         sh 'git add .'
                         sh 'git commit -m "ci: version bump"'
                         sh 'git push origin HEAD:dockerhub-aws-k8s-integrate-to-pipeline'
