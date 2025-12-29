@@ -62,7 +62,9 @@ pipeline {
         stage('commit version update'){
             steps {
                 script {
+                    // github credential must be personal access token instead of password
                     withCredentials([usernamePassword(credentialsId: 'github-credential', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]){
+                        //must set username and user email first
                         sh 'git config user.name "hsuhana"'
                         sh 'git config user.email "iamnotliaml@gmail.com"'
                         sh 'git remote set-url origin https://' + GIT_USER + ':' + GIT_TOKEN + '@github.com/hsuhana/java-maven-app_eks.git' 
